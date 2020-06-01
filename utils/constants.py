@@ -5,5 +5,5 @@ MAX_ACTIONS = 8
 NO_PARENT = -1
 NODE_GENERATED = 1
 START_PARENT = -99
-# Node cost for BFS
-NODE_COST_BFS = 1
+# Save location for the map image
+SAVE_LOCATION = 'images/map.png'
