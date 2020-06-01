@@ -1,3 +1,4 @@
+import os
 import cv2
 import numpy as np
 from utils import constants
@@ -80,8 +81,7 @@ class Map:
         self.slopes_poly = get_slopes(self.coord_polygon)
         self.slopes_rect = get_slopes(self.coord_rectangle)
         self.slopes_rhom = get_slopes(self.coord_rhombus)
-        # Define empty world and add obstacles to it
-        self.obstacle_img = np.zeros((self.height, self.width, 3), dtype=np.uint8)
+        # Get the image with all the obstacles
         self.obstacle_img = self.draw_obstacles()
         # Get image to search for obstacles
         self.check_img = self.erode_image()
@@ -189,11 +189,17 @@ class Map:
         Draw map using half-plane equations
         :return: map-image with all obstacles
         """
-        # Fill map-image with white color
-        self.obstacle_img.fill(255)
-        # Draw various obstacles on the map
-        self.draw_circle()
-        self.draw_ellipse()
-        self.draw_polygons()
-
-        return self.obstacle_img
+        # Make map file only once
+        if not os.path.exists(constants.SAVE_LOCATION):
+            # Define empty world and add obstacles to it
+            self.obstacle_img = np.zeros((self.height, self.width, 3), dtype=np.uint8)
+            # Fill map-image with white color
+            self.obstacle_img.fill(255)
+            # Draw various obstacles on the map
+            self.draw_circle()
+            self.draw_ellipse()
+            self.draw_polygons()
+            cv2.imwrite(constants.SAVE_LOCATION, self.obstacle_img)
+            return self.obstacle_img
+        # Return the generated map image
+        return cv2.imread(constants.SAVE_LOCATION)
