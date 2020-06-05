@@ -13,7 +13,7 @@ Add various parameters as input arguments from user
 :param goal_node_data: a tuple of 2 values: goal coordinates
 :param robot_radius: radius of the robot
 :param clearance: minimum distance between robot and any obstacle 
-:param method: d for dijkstra or a for a-star
+:param method: 'wa' for weighted a-star
 :param animation: 1 to show animation otherwise use 0
 """
 script, start_node_coords, goal_node_coords, robot_radius, clearance, method, animation = argv
