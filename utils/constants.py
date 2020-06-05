@@ -7,3 +7,5 @@ NODE_GENERATED = 1
 START_PARENT = -99
 # Save location for the map image
 SAVE_LOCATION = 'images/map.png'
+# Weight for a-star cost heuristic
+WEIGHT_A_STAR = 2
