@@ -4,7 +4,7 @@
 
 ## Overview
 This project implements search-based algorithms that yield a sub-optimal path if one exists. Path finding 
-algorithms, such as Weighted A*, have been used find an optimal path for the robot from the user-defined start to end 
+algorithms, such as Weighted A*, have been used find a sub-optimal path for the robot from the user-defined start to end 
 point. The project also generates animation to visualize the exploration of each of the mentioned search-based methods. 
 It first checks that the user inputs do not lie in the obstacle space. Note that the obstacle space is pre-defined 
 and static.
