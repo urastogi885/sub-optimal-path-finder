@@ -9,9 +9,11 @@ point. The project also generates animation to visualize the exploration of each
 It first checks that the user inputs do not lie in the obstacle space. Note that the obstacle space is pre-defined 
 and static.
 
+In Weighted A*, the heuristic cost is multiplied by a weight factor, epsilon. If epsilon is 1, Weighted A* becomes A*.
+
 <p align="center">
-  <img src="https://github.com/urastogi885/sub-optimal-path-finder/blob/master/images/exploration.gif">
-  <br><b>Figure 1 - Node exploration for a rigid robot using Weighted A*</b><br>
+  <img src="https://github.com/urastogi885/sub-optimal-path-finder/blob/master/images/faster.gif">
+  <br><b>Figure 1 - Comparison of node exploration for a rigid robot using Weighted A*</b><br>
 </p>
 
 ## Todo
