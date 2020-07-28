@@ -17,4 +17,4 @@ install:
 
 # Run python scripts
 script:
-  - python3 robot_explorer.py 50,30 150,150 2 1 wa 1
+  - python3 robot_explorer.py 50,30 150,150 2 1 1 1

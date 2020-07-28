@@ -2,7 +2,7 @@
 import cv2
 import math
 import numpy as np
-from queue import PriorityQueue
+import queue
 # Import custom-built methods
 from utils import constants
 from utils.actions import take_action
@@ -44,10 +44,6 @@ class Explorer:
         self.parent = np.full(fill_value=constants.NO_PARENT, shape=constants.MAP_SIZE)
         # Define a 2-D array to store base cost of each node
         self.base_cost = np.full(fill_value=constants.NO_PARENT, shape=constants.MAP_SIZE)
-        # Define video-writer of open-cv to record the exploration and final path
-        video_format = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
-        self.video_output = cv2.VideoWriter('exploration_' + self.method + '.avi', video_format, 100.0,
-                                            (constants.MAP_SIZE[1], constants.MAP_SIZE[0]))
 
     def get_heuristic_score(self, node):
         """
@@ -67,8 +63,11 @@ class Explorer:
         """
         # If A-star is to be used
         # Add heuristic value and node level to get the final weight for the current node
-        if self.method == 'wa':
+        if not self.method:
             return constants.WEIGHT_A_STAR * self.get_heuristic_score(node) + node_cost
+        # For depth-first search
+        elif self.method == 1:
+            return 1
         # Print error statement and exit
         print('Incorrect method! Please try again.')
         quit()
@@ -79,8 +78,11 @@ class Explorer:
         :param map_img: 2-d array with information of the map
         :return: nothing
         """
-        # Initialize priority queue
-        node_queue = PriorityQueue()
+        # For weighted a-star, initialize priority queue
+        if not self.method:
+            node_queue = queue.PriorityQueue()
+        else:
+            node_queue = queue.LifoQueue()
         # Add cost-to-come of start node in the array
         # Start node has a cost-to-come of 0
         self.base_cost[self.start_node[0]][self.start_node[1]] = 0
@@ -109,7 +111,6 @@ class Explorer:
                     else:
                         self.base_cost[y][x] = self.base_cost[current_node[1][0], current_node[1][1]] + math.sqrt(2)
                     # Add child node to priority queue
-                    # final_cost = self.get_final_weight((y, x), self.base_cost[y][x])
                     node_queue.put((self.get_final_weight((y, x), self.base_cost[y][x]), (y, x)))
                     self.generated_nodes.append((y, x))
                     # Update parent of the child node
@@ -142,27 +143,33 @@ class Explorer:
         :param map_img: 2-d array with information of the map
         :return: nothing
         """
+        # Define video-writer of open-cv to record the exploration and final path
+        video_format = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
+        video_output = cv2.VideoWriter('exploration_' + str(self.method) + '.avi', video_format, 100.0,
+                                       (constants.MAP_SIZE[1], constants.MAP_SIZE[0]))
+        # Define various color vectors
         red = [0, 0, 255]
         blue = [255, 0, 0]
         green = [0, 255, 0]
         grey = [200, 200, 200]
         # Add text to show heuristic weight
-        cv2.putText(map_img, 'Heuristic Weight: ' + str(constants.WEIGHT_A_STAR), (constants.MAP_SIZE[1] - 100, 20),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 225))
+        if not self.method:
+            cv2.putText(map_img, 'Heuristic Weight: ' + str(constants.WEIGHT_A_STAR), (constants.MAP_SIZE[1] - 100, 20),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 225))
         # Show all generated nodes
         for y, x in self.generated_nodes:
             map_img[constants.MAP_SIZE[0] - y, x] = grey
-            self.video_output.write(map_img)
+            video_output.write(map_img)
         # Show path
         data = self.generate_path()
         for i in range(len(data) - 1, -1, -1):
             map_img[constants.MAP_SIZE[0] - data[i][0], data[i][1]] = blue
-            self.video_output.write(map_img)
+            video_output.write(map_img)
         # Draw start and goal node to the video frame in the form of filled circle
         cv2.circle(map_img, (data[-1][1], constants.MAP_SIZE[0] - data[-1][0]), 2, green, -1)
         cv2.circle(map_img, (data[0][1], constants.MAP_SIZE[0] - data[0][0]), 2, red, -1)
         # Show path for some time after exploration
         for _ in range(1000):
-            self.video_output.write(map_img)
-        self.video_output.release()
+            video_output.write(map_img)
+        video_output.release()
         cv2.destroyAllWindows()
