@@ -63,10 +63,10 @@ class Explorer:
         """
         # If A-star is to be used
         # Add heuristic value and node level to get the final weight for the current node
-        if self.method == 'wa':
+        if not self.method:
             return constants.WEIGHT_A_STAR * self.get_heuristic_score(node) + node_cost
         # For depth-first search
-        elif self.method == 'dfs':
+        elif self.method == 1:
             return 1
         # Print error statement and exit
         print('Incorrect method! Please try again.')
@@ -79,7 +79,7 @@ class Explorer:
         :return: nothing
         """
         # For weighted a-star, initialize priority queue
-        if self.method == 'wa':
+        if not self.method:
             node_queue = queue.PriorityQueue()
         else:
             node_queue = queue.LifoQueue()
@@ -145,7 +145,7 @@ class Explorer:
         """
         # Define video-writer of open-cv to record the exploration and final path
         video_format = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
-        video_output = cv2.VideoWriter('exploration_' + self.method + '.avi', video_format, 100.0,
+        video_output = cv2.VideoWriter('exploration_' + str(self.method) + '.avi', video_format, 100.0,
                                        (constants.MAP_SIZE[1], constants.MAP_SIZE[0]))
         # Define various color vectors
         red = [0, 0, 255]
@@ -153,8 +153,9 @@ class Explorer:
         green = [0, 255, 0]
         grey = [200, 200, 200]
         # Add text to show heuristic weight
-        cv2.putText(map_img, 'Heuristic Weight: ' + str(constants.WEIGHT_A_STAR), (constants.MAP_SIZE[1] - 100, 20),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 225))
+        if not self.method:
+            cv2.putText(map_img, 'Heuristic Weight: ' + str(constants.WEIGHT_A_STAR), (constants.MAP_SIZE[1] - 100, 20),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 225))
         # Show all generated nodes
         for y, x in self.generated_nodes:
             map_img[constants.MAP_SIZE[0] - y, x] = grey
