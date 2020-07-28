@@ -2,7 +2,7 @@
 import cv2
 import math
 import numpy as np
-from queue import PriorityQueue
+import queue
 # Import custom-built methods
 from utils import constants
 from utils.actions import take_action
@@ -69,6 +69,9 @@ class Explorer:
         # Add heuristic value and node level to get the final weight for the current node
         if self.method == 'wa':
             return constants.WEIGHT_A_STAR * self.get_heuristic_score(node) + node_cost
+        # For depth-first search
+        elif self.method == 'dfs':
+            return 1
         # Print error statement and exit
         print('Incorrect method! Please try again.')
         quit()
@@ -79,8 +82,11 @@ class Explorer:
         :param map_img: 2-d array with information of the map
         :return: nothing
         """
-        # Initialize priority queue
-        node_queue = PriorityQueue()
+        # For weighted a-star, initialize priority queue
+        if self.method == 'wa':
+            node_queue = queue.PriorityQueue()
+        else:
+            node_queue = queue.LifoQueue()
         # Add cost-to-come of start node in the array
         # Start node has a cost-to-come of 0
         self.base_cost[self.start_node[0]][self.start_node[1]] = 0
@@ -109,7 +115,6 @@ class Explorer:
                     else:
                         self.base_cost[y][x] = self.base_cost[current_node[1][0], current_node[1][1]] + math.sqrt(2)
                     # Add child node to priority queue
-                    # final_cost = self.get_final_weight((y, x), self.base_cost[y][x])
                     node_queue.put((self.get_final_weight((y, x), self.base_cost[y][x]), (y, x)))
                     self.generated_nodes.append((y, x))
                     # Update parent of the child node
