@@ -13,7 +13,7 @@ Add various parameters as input arguments from user
 :param goal_node_data: a tuple of 2 values: goal coordinates
 :param robot_radius: radius of the robot
 :param clearance: minimum distance between robot and any obstacle 
-:param method: 'wa' for weighted a-star
+:param method: 0 for weighted a-star and 1 for depth-first search; look at DICT_METHODS in constants.py for more info
 :param animation: 1 to show animation otherwise use 0
 """
 script, start_node_coords, goal_node_coords, robot_radius, clearance, method, animation = argv
@@ -27,7 +27,7 @@ if __name__ == '__main__':
     # Initialize the map class
     obstacle_map = Map(int(robot_radius), int(clearance))
     # Initialize the explorer class
-    explorer = Explorer(start_node_coords, goal_node_coords, str(method))
+    explorer = Explorer(start_node_coords, goal_node_coords, int(method))
     # Obstacle checking image
     check_image = obstacle_map.check_img.copy()
     # Check validity of start and goal nodes
