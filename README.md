@@ -61,6 +61,6 @@ python3 robot_explorer.py <start_x,start_y> <goal_x,goal_y> <robot_radius> <clea
 ````
 - An example for using *Weighted A** for a rigid robot:
 ````
-python3 robot_explorer.py 50,30 150,150 2 1 wa 1
+python3 robot_explorer.py 50,30 150,150 2 1 0 1
 ````
 - The output in the [Overview](#overview) section has been generated using the above arguments.
