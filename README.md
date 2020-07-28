@@ -11,9 +11,12 @@ and static.
 
 In Weighted A*, the heuristic cost is multiplied by a weight factor, epsilon. If epsilon is 1, Weighted A* becomes A*.
 
+Unlike A* and Weighted A*, Depth-first search(DFS) has to concept of cost-to-come and cost-to-goal. Moreover, it is 
+based on a Last-In-First-Out (LIFO) queue. A LIFO queue is simply known as a stack.
+
 <p align="center">
   <img src="https://github.com/urastogi885/sub-optimal-path-finder/blob/master/images/faster.gif">
-  <br><b>Figure 1 - Comparison of node exploration for a rigid robot using Weighted A*</b><br>
+  <br><b>Figure 1 - Comparison of A*, Weighted A*, and DFS</b><br>
 </p>
 
 ## Todo
