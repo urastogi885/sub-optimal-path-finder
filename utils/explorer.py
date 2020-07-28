@@ -44,10 +44,6 @@ class Explorer:
         self.parent = np.full(fill_value=constants.NO_PARENT, shape=constants.MAP_SIZE)
         # Define a 2-D array to store base cost of each node
         self.base_cost = np.full(fill_value=constants.NO_PARENT, shape=constants.MAP_SIZE)
-        # Define video-writer of open-cv to record the exploration and final path
-        video_format = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
-        self.video_output = cv2.VideoWriter('exploration_' + self.method + '.avi', video_format, 100.0,
-                                            (constants.MAP_SIZE[1], constants.MAP_SIZE[0]))
 
     def get_heuristic_score(self, node):
         """
@@ -147,6 +143,11 @@ class Explorer:
         :param map_img: 2-d array with information of the map
         :return: nothing
         """
+        # Define video-writer of open-cv to record the exploration and final path
+        video_format = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
+        video_output = cv2.VideoWriter('exploration_' + self.method + '.avi', video_format, 100.0,
+                                       (constants.MAP_SIZE[1], constants.MAP_SIZE[0]))
+        # Define various color vectors
         red = [0, 0, 255]
         blue = [255, 0, 0]
         green = [0, 255, 0]
@@ -157,17 +158,17 @@ class Explorer:
         # Show all generated nodes
         for y, x in self.generated_nodes:
             map_img[constants.MAP_SIZE[0] - y, x] = grey
-            self.video_output.write(map_img)
+            video_output.write(map_img)
         # Show path
         data = self.generate_path()
         for i in range(len(data) - 1, -1, -1):
             map_img[constants.MAP_SIZE[0] - data[i][0], data[i][1]] = blue
-            self.video_output.write(map_img)
+            video_output.write(map_img)
         # Draw start and goal node to the video frame in the form of filled circle
         cv2.circle(map_img, (data[-1][1], constants.MAP_SIZE[0] - data[-1][0]), 2, green, -1)
         cv2.circle(map_img, (data[0][1], constants.MAP_SIZE[0] - data[0][0]), 2, red, -1)
         # Show path for some time after exploration
         for _ in range(1000):
-            self.video_output.write(map_img)
-        self.video_output.release()
+            video_output.write(map_img)
+        video_output.release()
         cv2.destroyAllWindows()
