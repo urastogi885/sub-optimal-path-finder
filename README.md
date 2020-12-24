@@ -11,7 +11,7 @@ and static.
 
 In Weighted A*, the heuristic cost is multiplied by a weight factor, epsilon. If epsilon is 1, Weighted A* becomes A*.
 
-Unlike A* and Weighted A*, Depth-first search(DFS) has to concept of cost-to-come and cost-to-goal. Moreover, it is 
+Unlike A* and Weighted A*, Depth-first search(DFS) has no concept of cost-to-come and cost-to-goal. Moreover, it is 
 based on a Last-In-First-Out (LIFO) queue. A LIFO queue is simply known as a stack.
 
 <p align="center">
@@ -28,7 +28,7 @@ based on a Last-In-First-Out (LIFO) queue. A LIFO queue is simply known as a sta
 ## Dependencies
 
 - Python3
-- Python3 Libraries: Numpy, OpenCV-Python, Math, Queue, Time, Sys, Ast
+- Python3 Libraries used: Numpy, OpenCV-Python, Math, Queue, Time, Sys, Ast
 
 ## Install Dependencies
 
